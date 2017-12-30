@@ -21,3 +21,6 @@ emulator/src/platform/python/flags.h
 emulator/src/platform/python/lib.c
 emulator/src/platform/python/mgba/_pylib.so
 emulator/src/platform/python/setup.py
+emulator/CTestTestfile.cmake
+emulator/python/
+emulator/src/platform/python/mgba/_pylib.abi3.so
