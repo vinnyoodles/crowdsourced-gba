@@ -1,0 +1,14 @@
+emulator/CMakeCache.txt
+emulator/CMakeFiles/
+emulator/CPackConfig.cmake
+emulator/CPackSourceConfig.cmake
+emulator/Makefile
+emulator/cmake_install.cmake
+emulator/flags.h
+emulator/libmgba.0.7.0.dylib
+emulator/libmgba.0.7.dylib
+emulator/libmgba.dylib
+emulator/mgba-server
+emulator/qt/
+emulator/sdl/
+emulator/version.c
