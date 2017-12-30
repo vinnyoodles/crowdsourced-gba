@@ -12,3 +12,4 @@ emulator/mgba-server
 emulator/qt/
 emulator/sdl/
 emulator/version.c
+*.pyc

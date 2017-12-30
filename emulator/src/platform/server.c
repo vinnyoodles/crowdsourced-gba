@@ -1,8 +1,12 @@
+#include <stdio.h>
+#include <string.h>
+#include <inttypes.h>
 #include <mgba/core/core.h>
 #include <mgba/feature/commandline.h>
 #include <mgba-util/socket.h>
 
 #define DEFAULT_PORT 2578
+#define MAX_LINE 1024
 
 static bool run_loop(const struct mArguments* args, Socket client);
 
@@ -76,20 +80,16 @@ bool run_loop(const struct mArguments* args, Socket client) {
     // Get the dimensions required for this core and send them to the client.
     unsigned width, height;
     core->desiredVideoDimensions(core, &width, &height);
-    ssize_t bufferSize = width * height * BYTES_PER_PIXEL;
-    uint32_t sendNO;
-    sendNO = htonl(width);
-    SocketSend(client, &sendNO, sizeof(sendNO));
-    sendNO = htonl(height);
-    SocketSend(client, &sendNO, sizeof(sendNO));
-    sendNO = htonl(BYTES_PER_PIXEL);
-    SocketSend(client, &sendNO, sizeof(sendNO));
+    char buf[MAX_LINE];
+    int len = sprintf(buf, "%x\r\n%x\r\n%x\r\n", htonl(width), htonl(height), htonl(BYTES_PER_PIXEL));
+    SocketSend(client, buf, len);
 
     // Create a video buffer and tell the core to use it.
     // If a core isn't told to use a video buffer, it won't render any graphics.
     // This may be useful in situations where everything except for displayed
     // output is desired.
-    void* videoOutputBuffer = malloc(bufferSize);
+    ssize_t buffer_size = width * height * BYTES_PER_PIXEL;
+    void* videoOutputBuffer = malloc(buffer_size);
     core->setVideoBuffer(core, videoOutputBuffer, width);
 
     // Tell the core to actually load the file.
@@ -125,7 +125,7 @@ bool run_loop(const struct mArguments* args, Socket client) {
         core->runFrame(core);
 
         // Send back the video buffer.
-        if (SocketSend(client, videoOutputBuffer, bufferSize) != bufferSize) {
+        if (SocketSend(client, videoOutputBuffer, buffer_size) != buffer_size) {
             break;
         }
     }
