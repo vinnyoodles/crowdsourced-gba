@@ -9,6 +9,7 @@ emulator/libmgba.0.7.0.dylib
 emulator/libmgba.0.7.dylib
 emulator/libmgba.dylib
 emulator/mgba-server
+emulator/mgba-client
 emulator/qt/
 emulator/sdl/
 emulator/version.c

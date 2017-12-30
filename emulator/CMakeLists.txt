@@ -830,9 +830,17 @@ if(BUILD_SUITE)
 endif()
 
 if(BUILD_SERVER)
-	add_executable(${BINARY_NAME}-server ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/server.c)
-	target_link_libraries(${BINARY_NAME}-server ${BINARY_NAME})
-	set_target_properties(${BINARY_NAME}-server PROPERTIES COMPILE_DEFINITIONS "${OS_DEFINES};${FEATURE_DEFINES};${FUNCTION_DEFINES}")
+    add_executable(${BINARY_NAME}-server ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/client-server/server.c)
+    target_link_libraries(${BINARY_NAME}-server ${BINARY_NAME})
+    set_target_properties(${BINARY_NAME}-server PROPERTIES COMPILE_DEFINITIONS "${OS_DEFINES};${FEATURE_DEFINES};${FUNCTION_DEFINES}")
+
+    if(BUILD_SDL)
+        add_executable(${BINARY_NAME}-client ${CMAKE_CURRENT_SOURCE_DIR}/src/platform/client-server/client.c)
+        target_link_libraries(${BINARY_NAME}-client ${BINARY_NAME} ${SDL_LIBRARY} ${SDLMAIN_LIBRARY} ${OPENGL_LIBRARY} ${OPENGLES2_LIBRARY})
+        set_target_properties(${BINARY_NAME}-client PROPERTIES
+            COMPILE_DEFINITIONS "${OS_DEFINES};${FEATURE_DEFINES};${FUNCTION_DEFINES}"
+            INCLUDE_DIRECTORIES "${SDL_INCLUDE_DIR};${CMAKE_CURRENT_SOURCE_DIR}/src;${CMAKE_CURRENT_SOURCE_DIR}/include")
+    endif()
 endif()
 
 configure_file(${CMAKE_CURRENT_SOURCE_DIR}/src/core/flags.h.in ${CMAKE_CURRENT_BINARY_DIR}/flags.h)
