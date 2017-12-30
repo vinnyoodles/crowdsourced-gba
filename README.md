@@ -2,7 +2,7 @@
 
 Inspired by [Twitch Plays Pokemon](https://www.twitch.tv/twitchplayspokemon).
 
-This brings the crowdsourced gaming off of twitch and onto a more global platform, the web browser.
+This brings the idea of crowdsourced gaming off of twitch and onto a more global platform, the web browser.
 
 ### Compiling
 
