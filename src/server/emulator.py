@@ -9,7 +9,7 @@ def run(rom_path):
     core = find(rom_path)
     width, height = core.desiredVideoDimensions()
     image = Image(width)
-    core.setVideoBuffer(image)
+    core.setVideoBuffer(width)
     core.loadFile(rom_path)
     core.loadCoreConfig()
 
