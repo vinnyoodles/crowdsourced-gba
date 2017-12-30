@@ -8,6 +8,11 @@ This brings the crowdsourced gaming off of twitch and onto a more global platfor
 
 #### OSX
 
+mgba, the emulator, has its own dependencies.
+```bash
+brew install cmake ffmpeg imagemagick libzip qt5 sdl2 libedit
+```
+
 ```bash
 cd emulator
 ./osx_make.sh
