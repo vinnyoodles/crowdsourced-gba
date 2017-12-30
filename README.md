@@ -13,6 +13,7 @@ mgba, the emulator, has its own dependencies.
 brew install cmake ffmpeg imagemagick libzip qt5 sdl2 libedit
 ```
 
+The following commands are to produce the `mgba-server` executable.
 ```bash
 cd emulator
 ./osx_make.sh
