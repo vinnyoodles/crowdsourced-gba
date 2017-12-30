@@ -16,4 +16,4 @@ make mgba-server
 
 ### Dependencies
 
-- GBA Emulator ([mgba](https://github.com/mgba-emu/mgba))
+- GBA Emulator, [mgba](https://github.com/mgba-emu/mgba) (Distributed under the [Mozilla Public License version 2.0](https://www.mozilla.org/en-US/MPL/2.0/))
