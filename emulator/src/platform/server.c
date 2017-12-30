@@ -6,9 +6,6 @@
 #define DEFAULT_PORT 13721
 
 static bool _mExampleRun(const struct mArguments* args, Socket client);
-static void _log(struct mLogger* log, int category, enum mLogLevel level, const char* format, va_list args);
-
-static int _logLevel = 0;
 
 int main(int argc, char** argv) {
 	bool didFail = false;
@@ -33,10 +30,6 @@ int main(int argc, char** argv) {
 		version(argv[0]);
 		goto cleanup;
 	}
-
-	// Set up a logger. The default logger prints everything to STDOUT, which is not usually desirable.
-	struct mLogger logger = { .log = _log };
-	mLogSetDefaultLogger(&logger);
 
 	// Initialize the socket layer and listen on the default port for this protocol.
 	SocketSubsystemInit();
@@ -120,9 +113,6 @@ bool _mExampleRun(const struct mArguments* args, Socket client) {
 	// Tell the core to apply the configuration in the associated config object.
 	mCoreLoadConfig(core);
 
-	// Set our logging level to be the logLevel in the configuration object.
-	mCoreConfigGetIntValue(&core->config, "logLevel", &_logLevel);
-
 	// Reset the core. This is needed before it can run.
 	core->reset(core);
 
@@ -146,23 +136,4 @@ bool _mExampleRun(const struct mArguments* args, Socket client) {
 	core->deinit(core);
 
 	return true;
-}
-
-void _log(struct mLogger* log, int category, enum mLogLevel level, const char* format, va_list args) {
-	// We don't need the logging object, so we call UNUSED to ensure there's no warning.
-	UNUSED(log);
-	// The level parameter is a bitmask that we can easily filter.
-	if (level & _logLevel) {
-		// Categories are registered at runtime, but the name can be found
-		// through a simple lookup.
-		printf("%s: ", mLogCategoryName(category));
-
-		// We get a format string and a varargs context from the core, so we
-		// need to use the v* version of printf.
-		vprintf(format, args);
-
-		// The format strings do NOT include a newline, so we need to
-		// append it ourself.
-		putchar('\n');
-	}
 }
