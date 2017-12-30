@@ -173,6 +173,20 @@ class Core(object):
     def loadPatch(self, vf):
         return bool(self._core.loadPatch(self._core, vf.handle))
 
+    def loadCoreConfig(self, key="python-emulator"):
+        ctype_key = ffi.new("char[]", key.encode("UTF-8"))
+        lib.mCoreConfigInit(self.config._native, ctype_key)
+        lib.mCoreConfigLoad(self.config._native)
+
+        # manually override the "idleOptimization" setting to ensure cores
+        # that can detect idle loops will attempt the detection.
+        idle_key = "idleOptimization"
+        idle_value = "detect"
+        ctype_idle_key = ffi.new("char[]", idle_key.encode("UTF-8"))
+        ctype_idle_value = ffi.new("char[]", idle_value.encode("UTF-8"))
+        lib.mCoreConfigSetDefaultValue(self.config._native, ctype_idle_key, ctype_idle_value)
+        lib.mCoreLoadConfig(self._core)
+
     def loadConfig(self, config):
         lib.mCoreLoadForeignConfig(self._core, config._native)
 

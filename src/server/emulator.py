@@ -1,15 +1,20 @@
-import socket
+from mgba.core import Core, find
 
-EMULATOR_IP = 'localhost'
-EMULATOR_PORT = 2578
-BUFFER_SIZE = 1024
+class Image(object):
+    def __init__(self, width):
+        self.buffer = []
+        self.stride = width
 
-def run():
-    print('connecting to emulator')
-    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-    s.connect((EMULATOR_IP, EMULATOR_PORT))
-    while True:
-        chunk = s.recv(BUFFER_SIZE)
-        if chunk == b'':
-            return           
-        print(chunk.decode('utf-8'))
+def run(rom_path):
+    core = find(rom_path)
+    width, height = core.desiredVideoDimensions()
+    image = Image(width)
+    core.setVideoBuffer(image)
+    core.loadFile(rom_path)
+    core.loadCoreConfig()
+
+    # Reset the core. This is needed before it can run.
+    core.reset()
+
+    # while True:
+    #     core.runFrame()
