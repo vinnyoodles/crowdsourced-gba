@@ -3,12 +3,12 @@
 #include <mgba/feature/commandline.h>
 #include <mgba-util/socket.h>
 
-#define DEFAULT_PORT 13721
+#define DEFAULT_PORT 2578
 
-static bool _mExampleRun(const struct mArguments* args, Socket client);
+static bool run_loop(const struct mArguments* args, Socket client);
 
 int main(int argc, char** argv) {
-	bool didFail = false;
+	bool did_fail = false;
 
 	// Arguments from the command line are parsed by the parseArguments function.
 	// The NULL here shows that we don't give it any arguments beyond the default ones.
@@ -21,7 +21,7 @@ int main(int argc, char** argv) {
 	if (!parsed || args.showHelp) {
 		// If parsing failed, or the user passed --help, show usage.
 		usage(argv[0], NULL);
-		didFail = !parsed;
+		did_fail = !parsed;
 		goto cleanup;
 	}
 
@@ -36,7 +36,7 @@ int main(int argc, char** argv) {
 	Socket sock = SocketOpenTCP(DEFAULT_PORT, NULL);
 	if (SOCKET_FAILED(sock) || SOCKET_FAILED(SocketListen(sock, 0))) {
 		SocketSubsystemDeinit();
-		didFail = true;
+		did_fail = true;
 		goto cleanup;
 	}
 
@@ -45,12 +45,12 @@ int main(int argc, char** argv) {
 	if (SOCKET_FAILED(client)) {
 		SocketClose(sock);
 		SocketSubsystemDeinit();
-		didFail = true;
+		did_fail = true;
 		goto cleanup;		
 	}
 
 	// Run the server
-	didFail = _mExampleRun(&args, client);
+	did_fail = run_loop(&args, client);
 
 	// Clean up the sockets.
 	SocketClose(client);
@@ -60,10 +60,10 @@ int main(int argc, char** argv) {
 	cleanup:
 	freeArguments(&args);
 
-	return didFail;
+	return did_fail;
 }
 
-bool _mExampleRun(const struct mArguments* args, Socket client) {
+bool run_loop(const struct mArguments* args, Socket client) {
 	// First, we need to find the mCore that's appropriate for this type of file.
 	// If one doesn't exist, it returns NULL and we can't continue.
 	struct mCore* core = mCoreFind(args->fname);
