@@ -13,3 +13,11 @@ emulator/qt/
 emulator/sdl/
 emulator/version.c
 *.pyc
+emulator/src/platform/python/CMakeCache.txt
+emulator/src/platform/python/CMakeFiles/
+emulator/src/platform/python/Makefile
+emulator/src/platform/python/cmake_install.cmake
+emulator/src/platform/python/flags.h
+emulator/src/platform/python/lib.c
+emulator/src/platform/python/mgba/_pylib.so
+emulator/src/platform/python/setup.py
