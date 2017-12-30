@@ -6,10 +6,9 @@ class IndexHandler(web.RequestHandler):
         self.write('Hello World!')
 
 def run():
-    print('starting client')
-    client = web.Application([
+    server = web.Application([
         (r'/', IndexHandler), 
         (r'/favicon.ico', web.StaticFileHandler, {'path': 'static'})
     ])
-    client.listen(3000)
+    server.listen(3000)
     ioloop.IOLoop.instance().start()

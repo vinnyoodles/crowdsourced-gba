@@ -1,4 +1,4 @@
-import client, emulator, sys
+import server, emulator, sys
 
 
 def usage():
@@ -9,4 +9,4 @@ if __name__ == '__main__':
         usage()
         sys.exit(0)
     emulator.run(sys.argv[1])
-    # client.run()
+    # server.run()
