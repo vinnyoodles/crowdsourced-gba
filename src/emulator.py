@@ -4,7 +4,7 @@ class Emulator:
     def __init__(self, rom_path, web_server):
         self.web_server = web_server
         self.core = mgba.core.loadPath(rom_path)
-        self.width, self.height = core.desiredVideoDimensions()
+        self.width, self.height = self.core.desiredVideoDimensions()
         self.image = mgba.image.Image(self.width, self.height)
         self.core.setVideoBuffer(self.image)
 
