@@ -28,12 +28,13 @@ class Server(web.Application):
         self._settings = dict(
             template_path=os.path.join(os.path.dirname(__file__), 'static'),
             static_path=os.path.join(os.path.dirname(__file__), 'static'),
-            debug=True
+            debug=True,
+            autoreload=True
         )
         self._handlers = [
             (r'/', IndexHandler),
             (r'/ws', SocketHandler),
-            (r'/favicon.ico', web.StaticFileHandler)
+            (r'/favicon.ico', web.StaticFileHandler, { 'path': '.' })
         ]
 
         web.Application.__init__(self, self._handlers, **self._settings)
