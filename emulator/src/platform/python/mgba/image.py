@@ -31,6 +31,9 @@ class Image:
         p.writeClose()
         return success
 
+    def raw_buffer(self):
+        return ffi.buffer(self.buffer)[:]
+
     if 'PImage' in globals():
         def toPIL(self):
             type = "RGBA" if self.alpha else "RGBX"
