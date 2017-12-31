@@ -807,7 +807,7 @@ uint16_t GBAIORead(struct GBA* gba, uint32_t address) {
 	case REG_DMA3DAD_LO:
 	case REG_DMA3DAD_HI:
 		// Write-only register
-		mLOG(GBA_IO, GAME_ERROR, "Read from write-only I/O register: %03X", address);
+		// mLOG(GBA_IO, GAME_ERROR, "Read from write-only I/O register: %03X", address);
 		return GBALoadBad(gba->cpu);
 
 	case REG_DMA0CNT_LO:
@@ -815,7 +815,7 @@ uint16_t GBAIORead(struct GBA* gba, uint32_t address) {
 	case REG_DMA2CNT_LO:
 	case REG_DMA3CNT_LO:
 		// Write-only register
-		mLOG(GBA_IO, GAME_ERROR, "Read from write-only I/O register: %03X", address);
+		// mLOG(GBA_IO, GAME_ERROR, "Read from write-only I/O register: %03X", address);
 		return 0;
 
 	case REG_JOY_RECV_LO:
@@ -825,7 +825,7 @@ uint16_t GBAIORead(struct GBA* gba, uint32_t address) {
 
 	case REG_SOUNDBIAS:
 	case REG_POSTFLG:
-		mLOG(GBA_IO, STUB, "Stub I/O register read: %03x", address);
+		// mLOG(GBA_IO, STUB, "Stub I/O register read: %03x", address);
 		break;
 	case REG_SOUND1CNT_LO:
 	case REG_SOUND1CNT_HI:
