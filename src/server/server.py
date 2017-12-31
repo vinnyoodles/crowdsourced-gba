@@ -1,8 +1,7 @@
 import os.path
 from tornado import websocket, web, ioloop
-import socket
 
-class Indexhandler(web.RequestHandler):
+class IndexHandler(web.RequestHandler):
     def get(self):
         self.render("index.html")
 
