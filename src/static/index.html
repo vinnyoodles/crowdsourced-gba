@@ -10,27 +10,38 @@
             document.addEventListener('DOMContentLoaded', function(event) { 
                 // Handle incoming websocket message callback
                 ws.onmessage = function(event) {
-                    console.log('Message Received:', event.data);
-                };
-
-                ws.onclose = function(event) {
-                };
-                
-                ws.onopen = function(event) {
+                    if (event.data instanceof Blob) {
+                        updateFrame(event.data)
+                    } else {
+                        try {
+                            var json = JSON.parse(event.data);
+                            setCanvas(json.width, json.height);
+                        } catch (err) {
+                            console.log('Failed to handle', event.data)
+                        }
+                    }
                 };
             });
+
+            function updateFrame(frame) {
+                var canvas = document.getElementById('canvas');
+                var context = canvas.getContext('2d');
+                var img = new Image();
+                img.onload = function () {
+                    context.drawImage(img, 0, 0);
+                }
+                img.src = URL.createObjectURL(frame);
+            }
+
+            function setCanvas(width, height) {
+                console.log('update canvas size', width, height);
+                var canvas = document.getElementById('canvas');
+                canvas.width = window.innerWidth;
+                canvas.height = window.innerHeight;
+            }
         </script>
     </head>
-
     <body>
-        <h1>Crowdsourced Gameboy Advanced</h1>
-        <div class="container">
-            <hr>
-            WebSocket status : <span id="status"></span>
-            <hr>
-        </br></br>
-        <label for="message">message:</label>
-        <input type="text" id="message" value="Hello World!"/><br />
-        <input type="submit" id="send" value="send" />
+        <canvas id="canvas"></canvas>
     </body>
 </html>

@@ -43,9 +43,9 @@ class Server(web.Application):
         metadata['width'] = core.width
         metadata['height'] = core.height
 
-    def emit_frame(self, buffer):
+    def emit_frame(self, data):
         for client in clients:
-            client.write_message(buffer, binary=True)
+            client.write_message(data, binary=True)
 
 
 if __name__ == '__main__':

@@ -1,4 +1,5 @@
-import mgba.core, mgba.image
+import mgba.core, mgba.image, io
+
 
 class Emulator(object):
     def __init__(self, rom_path, web_server):
@@ -15,4 +16,10 @@ class Emulator(object):
     def run(self):
         while self.enabled:
             self.core.runFrame()
-            self.web_server.emit_frame(self.image.raw_buffer())
+            self.web_server.emit_frame(self.get_frame())
+
+    def get_frame(self):
+        image = self.image.toPIL().convert('RGB')
+        buf = io.BytesIO()
+        image.save(buf, format='PNG')
+        return buf.getvalue()
