@@ -45,6 +45,8 @@ class Server(web.Application):
         metadata['height'] = core.height
 
     def emit_frame(self, data):
+        if len(data) <= 0:
+            return
         for client in clients:
             client.write_message(data, binary=True)
 

@@ -1,8 +1,22 @@
+var SIZE_MODIFIER = 2;
+var KEY_MAP = {
+    88: 'a',
+    90: 'b',
+    65: 'l',
+    83: 'r',
+    13: 'enter',
+    8: 'backspace'
+};
+
 var host = window.location.host;
 var ws = new WebSocket('ws://'+host+'/ws');
-var SIZE_MODIFIER = 2;
+var connected = false;
 
-document.addEventListener('DOMContentLoaded', function(event) { 
+document.addEventListener('DOMContentLoaded', onLoad);
+document.addEventListener('keydown', onKey);
+
+
+function onLoad(event) {
     // Handle incoming websocket message callback
     ws.onmessage = function(event) {
         if (event.data instanceof Blob) {
@@ -16,7 +30,22 @@ document.addEventListener('DOMContentLoaded', function(event) {
             }
         }
     };
-});
+
+    ws.onopen = function() {
+        connected = true;
+    }
+
+    ws.onclose = function() {
+        connected = false;
+    }
+}
+
+function onKey(event) {
+    if (!connected || !KEY_MAP[event.keyCode])
+        return
+
+    ws.send(KEY_MAP[event.keyCode]);
+}
 
 function updateFrame(frame) {
     var canvas = document.getElementById('canvas');
