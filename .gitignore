@@ -25,3 +25,4 @@ emulator/src/platform/python/setup.py
 emulator/CTestTestfile.cmake
 emulator/python/
 emulator/src/platform/python/mgba/_pylib.abi3.so
+mgba-qt.6

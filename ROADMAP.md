@@ -6,9 +6,9 @@ __In Progress__
 
 #### Tasks
 
-- [ ] __Setup mgba emulator using python wrapper API__
-- [x] *Implement python websocket server*
-- [x] *Establish socket between python server and browser*
+- [x] ~~Setup mgba emulator using python wrapper API~~
+- [x] ~~Implement python websocket server~~
+- [x] ~~Establish socket between python server and browser~~
 - [ ] *Create reactive UI*
 - [ ] *Implement democracy voting of some sort*
 - [ ] *Throttle actions to send to emulator*
