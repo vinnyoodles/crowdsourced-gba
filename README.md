@@ -39,4 +39,6 @@ export DYLD_LIBRARY_PATH=MGBA_DYLIB_PATH
 
 ### Dependencies
 
-- GBA Emulator, [mgba](https://github.com/mgba-emu/mgba) (Distributed under the [Mozilla Public License version 2.0](https://www.mozilla.org/en-US/MPL/2.0/))
+- [mgba](https://github.com/mgba-emu/mgba), GBA emulator with exposed python APIs (Distributed under the [Mozilla Public License version 2.0](https://www.mozilla.org/en-US/MPL/2.0/))
+- [Tornado](https://github.com/tornadoweb/tornado), python web server that supports websockets natively
+- [Pillow](https://github.com/python-pillow/Pillow), python imaging library
