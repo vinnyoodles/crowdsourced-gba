@@ -1,13 +1,16 @@
 import mgba.core, mgba.image
 
-def run(rom_path):
-    core = mgba.core.loadPath(rom_path)
-    width, height = core.desiredVideoDimensions()
-    image = mgba.image.Image(width, height)
-    core.setVideoBuffer(image)
+class Emulator:
+    def __init__(self, rom_path, web_server):
+        self.web_server = web_server
+        self.core = mgba.core.loadPath(rom_path)
+        self.width, self.height = core.desiredVideoDimensions()
+        self.image = mgba.image.Image(self.width, self.height)
+        self.core.setVideoBuffer(self.image)
 
-    # Reset the core. This is needed before it can run.
-    core.reset()
+        # Reset the core. This is needed before it can run.
+        self.core.reset()
 
-    while True:
-        core.runFrame()
+    def run(self):
+        while True:
+            self.core.runFrame()

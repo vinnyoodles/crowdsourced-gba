@@ -36,6 +36,9 @@ class Server(web.Application):
 
         web.Application.__init__(self, self._handlers, **self._settings)
 
+    def set_core(self, core):
+        self.core = core
+
 if __name__ == '__main__':
     Server().listen(8888)
     ioloop.IOLoop.instance().start()
