@@ -172,20 +172,6 @@ class Core(object):
     def loadPatch(self, vf):
         return bool(self._core.loadPatch(self._core, vf.handle))
 
-    def loadCoreConfig(self, key="python-emulator"):
-        native_key = ffi.new("char[]", key.encode("UTF-8"))
-        lib.mCoreConfigInit(self.config._native, native_key)
-        lib.mCoreConfigLoad(self.config._native)
-
-        # manually override the "idleOptimization" setting to ensure cores
-        # that can detect idle loops will attempt the detection.
-        idle_key = "idleOptimization"
-        idle_value = "detect"
-        native_idle_key = ffi.new("char[]", idle_key.encode("UTF-8"))
-        native_idle_value = ffi.new("char[]", idle_value.encode("UTF-8"))
-        lib.mCoreConfigSetDefaultValue(self.config._native, native_idle_key, native_idle_value)
-        lib.mCoreLoadConfig(self._core)
-
     def loadConfig(self, config):
         lib.mCoreLoadForeignConfig(self._core, config._native)
 
@@ -205,14 +191,10 @@ class Core(object):
         width = ffi.new("unsigned*")
         height = ffi.new("unsigned*")
         self._core.desiredVideoDimensions(self._core, width, height)
-        # BYTES_PER_PIXEL = 4 (32 bit integer)
-        buffer_len = width[0] * height[0] * 4
-        self.buffer = ffi.new("uint32_t*", buffer_len)
         return width[0], height[0]
 
-    def setVideoBuffer(self, width):
-        native_width = ffi.cast("unsigned int", width);
-        self._core.setVideoBuffer(self._core, self.buffer, native_width)
+    def setVideoBuffer(self, image):
+        self._core.setVideoBuffer(self._core, image.buffer, image.stride)
 
     def reset(self):
         self._core.reset(self._core)
