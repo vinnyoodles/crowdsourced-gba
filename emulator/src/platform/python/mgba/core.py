@@ -216,7 +216,7 @@ class Core(object):
 
     def reset(self):
         self._core.reset(self._core)
-        self._load()
+        self._wasReset = True
 
     @needsReset
     @protected

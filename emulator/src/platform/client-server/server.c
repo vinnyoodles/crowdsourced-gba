@@ -50,7 +50,6 @@ int main(int argc, char** argv) {
 
 	// We only grab one client.
 	Socket client = SocketAccept(sock, NULL);
-	printf("received client\n");
 	if (SOCKET_FAILED(client)) {
 		SocketClose(sock);
 		SocketSubsystemDeinit();
