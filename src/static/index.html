@@ -1,0 +1,36 @@
+<!doctype html>
+<html>
+    <head>
+        <title>Crowdsourced Gameboy Advanced</title>
+        <meta charset="utf-8" />
+        <script>
+            var host = window.location.host;
+            var ws = new WebSocket('ws://'+host+'/ws');
+
+            document.addEventListener('DOMContentLoaded', function(event) { 
+                // Handle incoming websocket message callback
+                ws.onmessage = function(event) {
+                    console.log('Message Received:', event.data);
+                };
+
+                ws.onclose = function(event) {
+                };
+                
+                ws.onopen = function(event) {
+                };
+            });
+        </script>
+    </head>
+
+    <body>
+        <h1>Crowdsourced Gameboy Advanced</h1>
+        <div class="container">
+            <hr>
+            WebSocket status : <span id="status"></span>
+            <hr>
+        </br></br>
+        <label for="message">message:</label>
+        <input type="text" id="message" value="Hello World!"/><br />
+        <input type="submit" id="send" value="send" />
+    </body>
+</html>

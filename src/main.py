@@ -9,4 +9,5 @@ if __name__ == '__main__':
         usage()
         sys.exit(0)
     emulator.run(sys.argv[1])
+    print('running')
     # server.run()

@@ -11,4 +11,3 @@ def run(rom_path):
 
     while True:
         core.runFrame()
-        print(image.toPIL())
