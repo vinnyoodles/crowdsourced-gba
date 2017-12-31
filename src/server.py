@@ -3,6 +3,7 @@ from tornado import websocket, web, ioloop
 
 # Store all active clients in a set.
 clients = set()
+metadata = dict()
 
 class IndexHandler(web.RequestHandler):
     def get(self):
@@ -11,6 +12,7 @@ class IndexHandler(web.RequestHandler):
 class SocketHandler(websocket.WebSocketHandler):
     def open(self):
         clients.add(self)
+        self.write_message(metadata)
 
     def on_message(self, message):
         self.write_message(message[::])
@@ -38,6 +40,13 @@ class Server(web.Application):
 
     def set_core(self, core):
         self.core = core
+        metadata['width'] = core.width
+        metadata['height'] = core.height
+
+    def emit_frame(self, buffer):
+        for client in clients:
+            client.write_message(buffer, binary=True)
+
 
 if __name__ == '__main__':
     Server().listen(8888)

@@ -1,6 +1,6 @@
 import mgba.core, mgba.image
 
-class Emulator:
+class Emulator(object):
     def __init__(self, rom_path, web_server):
         self.web_server = web_server
         self.core = mgba.core.loadPath(rom_path)
@@ -10,7 +10,9 @@ class Emulator:
 
         # Reset the core. This is needed before it can run.
         self.core.reset()
+        self.enabled = True
 
     def run(self):
-        while True:
+        while self.enabled:
             self.core.runFrame()
+            self.web_server.emit_frame(self.image.raw_buffer())
