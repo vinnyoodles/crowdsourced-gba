@@ -1,11 +1,11 @@
 var SIZE_MODIFIER = 2;
 var KEY_MAP = {
-    88: 'a',
-    90: 'b',
-    65: 'l',
-    83: 'r',
-    13: 'enter',
-    8: 'backspace'
+    88: 0,
+    90: 1,
+    65: 9,
+    83: 8,
+    13: 3,
+    8: 2
 };
 
 var host = window.location.host;
