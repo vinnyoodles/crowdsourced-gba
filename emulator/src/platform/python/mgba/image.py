@@ -32,7 +32,7 @@ class Image:
         return success
 
     def raw_buffer(self):
-        return ffi.buffer(self.buffer)[:]
+        return ffi.buffer(self.buffer)
 
     if 'PImage' in globals():
         def toPIL(self):
