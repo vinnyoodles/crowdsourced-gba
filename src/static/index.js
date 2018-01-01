@@ -10,7 +10,6 @@ var KEY_MAP = {
     40: 7, // down
     83: 8, // r
     65: 9, // l
-
 };
 
 var host = window.location.host;

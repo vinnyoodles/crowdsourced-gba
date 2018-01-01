@@ -6,13 +6,24 @@ This brings the idea of crowdsourced gaming off of twitch and onto a more global
 
 ### Building Python Emulator
 
+#### Docker
+
+Make sure you have docker installed, then run the following in the root directory of the repository:
+```bash
+docker build . -t crowdsourced-gba
+docker run -v `pwd`:/home crowdsourced-gba
+```
+
+The first line builds the docker image with all the dependencies listed in the Dockerfile.
+The second line performs the `cmake` and `make` command.
+
+#### OSX
+
 First, install all the dependencies in `requirements.txt`
 
 ```bash
 pip install -r requirements.txt
 ```
-
-#### OSX
 
 mgba, the emulator, has its own dependencies.
 ```bash
