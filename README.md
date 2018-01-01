@@ -14,8 +14,9 @@ docker build . -t crowdsourced-gba
 docker run -p 3000:8888 -e LD_LIBRARY_PATH=/home/emulator -v `pwd`:/home crowdsourced-gba
 ```
 
-The first line builds the Docker image, called `crowdsourced-gba`, with all the dependencies listed in the Dockerfile.
-The second line loads the build Docker image and performs the necessary build commands to build the emulator. It then starts up the python server with the port 8888 exposed in the container. The exposed port is then connected on the local machine on port 3000.
+The first line builds the Docker image, called `crowdsourced-gba`, with all the dependencies listed in the Dockerfile and then performs the building process for the emulator.
+The second line loads the Docker image and starts up the python server with the port 8888 exposed in the container.
+The exposed port is then connected on the local machine on port 3000.
 
 #### OSX
 

@@ -26,3 +26,6 @@ emulator/CTestTestfile.cmake
 emulator/python/
 emulator/src/platform/python/mgba/_pylib.abi3.so
 mgba-qt.6
+emulator/libmgba.so
+emulator/libmgba.so.0.7
+emulator/libmgba.so.0.7.0
