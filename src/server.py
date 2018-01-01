@@ -1,4 +1,4 @@
-import os.path
+import os.path, tornado
 from tornado import websocket, web, ioloop
 
 class Server:
@@ -34,7 +34,7 @@ class Server:
 
         def on_message(self, key):
             if Server.core is not None:
-                Server.core.set_key(int(key))
+                Server.core.push_key(int(key))
 
         def on_close(self):
             Server.clients.remove(self)
@@ -49,8 +49,12 @@ class Server:
 
     def emit_frame(self, data):
         if data is not None and len(data) > 0:
-            for client in Server.clients:
-                client.write_message(data, binary=True)
+            @tornado.gen.coroutine
+            def stream_frame(self):
+                for client in Server.clients:
+                    yield client.write_message(data, binary=True)
+
+            tornado.ioloop.IOLoop.current().spawn_callback(stream_frame, self)
 
     def listen(self, port):
         self.app.listen(port)

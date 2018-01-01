@@ -13,8 +13,13 @@ class Emulator(object):
         self.core.reset()
         self.enabled = True
 
+        # The actions will be stored in a queue.
+        self.queue = []
+
     def run(self):
         while self.enabled:
+            key = 0 if len(self.queue) == 0 else self.queue.pop(0)
+            self.core.setKeys(key)
             self.core.runFrame()
             self.web_server.emit_frame(self.get_frame())
 
@@ -24,5 +29,5 @@ class Emulator(object):
         image.save(buf, format='PNG')
         return buf.getvalue()[:]
 
-    def set_key(self, key):
-        self.core.setKeys(key)
+    def push_key(self, key):
+        self.queue.append(key)
