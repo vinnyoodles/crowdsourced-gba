@@ -49,7 +49,6 @@ class Server:
 
     def emit_frame(self, data):
         if data is not None and len(data) > 0:
-            print(len(data))
             for client in Server.clients:
                 client.write_message(data, binary=True)
 

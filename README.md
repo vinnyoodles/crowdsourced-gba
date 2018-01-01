@@ -11,11 +11,11 @@ This brings the idea of crowdsourced gaming off of twitch and onto a more global
 Make sure you have docker installed, then run the following in the root directory of the repository:
 ```bash
 docker build . -t crowdsourced-gba
-docker run -v `pwd`:/home crowdsourced-gba
+docker run -p 8888:8888 -e LD_LIBRARY_PATH=/home/emulator -v `pwd`:/home gba
 ```
 
 The first line builds the docker image, called `crowdsourced-gba`, with all the dependencies listed in the Dockerfile.
-The second line performs the `cmake` and `make` command.
+The second line performs the `cmake`, `make` command and starts the python server on port 8888.
 
 #### OSX
 

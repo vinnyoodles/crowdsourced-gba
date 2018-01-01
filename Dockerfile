@@ -20,7 +20,10 @@ RUN cmake --version
 
 RUN pip install 'tornado==4.5.2' 'cffi==1.11.2' 'Pillow==4.3.0'
 
+EXPOSE 8888
+
 CMD cd /home/emulator && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr . -DBUILD_PYTHON=ON -DBUILD_SERVER=OFF && \
     make mgba-py && \
-    pip install -e ./python
+    pip install -e ./python && \
+    python /home/src/main.py /home/roms/legend_of_zelda_the_minish_cap.gba
