@@ -12,13 +12,11 @@ var KEY_MAP = {
     65: 9, // l
 };
 
-var host = window.location.host;
-var ws = new WebSocket('ws://'+host+'/ws');
+var ws = new WebSocket('ws://' + window.location.host + '/ws');
 var connected = false;
 
 document.addEventListener('DOMContentLoaded', onLoad);
 document.addEventListener('keydown', onKey);
-
 
 function onLoad(event) {
     // Handle incoming websocket message callback
@@ -55,7 +53,7 @@ function updateFrame(frame) {
     var canvas = document.getElementById('canvas');
     var context = canvas.getContext('2d');
     var img = new Image();
-    img.onload = function () {
+    img.onload = function() {
         context.drawImage(img, 0, 0, img.width * SIZE_MODIFIER, img.height * SIZE_MODIFIER);
     }
     img.src = URL.createObjectURL(frame);
