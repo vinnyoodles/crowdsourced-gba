@@ -6,6 +6,12 @@ This brings the idea of crowdsourced gaming off of twitch and onto a more global
 
 ### Building Python Emulator
 
+First, install all the dependencies in `requirements.txt`
+
+```bash
+pip install -r requirements.txt
+```
+
 #### OSX
 
 mgba, the emulator, has its own dependencies.
@@ -22,7 +28,7 @@ make mgba-py
 
 There should now be a `python` directory, this contains the source code to install as a python module.
 ```bash
-pip3 install -e ./python
+pip install -e ./python
 ```
 
 To test, running the following command should not produce any errors.

@@ -1,51 +1,60 @@
 import os.path
 from tornado import websocket, web, ioloop
 
-# Store all active clients in a set.
-clients = set()
-metadata = dict()
-
-class IndexHandler(web.RequestHandler):
-    def get(self):
-        self.render('index.html')
-
-class SocketHandler(websocket.WebSocketHandler):
-    def open(self):
-        clients.add(self)
-        self.write_message(metadata)
-
-    def on_message(self, message):
-        self.write_message(message[::])
-
-    def on_close(self):
-        clients.remove(self)
-
-    def check_origin(self, orgin):
-        return True
-
-class Server(web.Application):
+class Server:
+    # Store all active clients in a set.
+    clients = set()
+    # Data to send to the client when entering.
+    metadata = dict()
+    # The emulator instance
+    core = None
     def __init__(self):
         self._settings = dict(
             template_path=os.path.join(os.path.dirname(__file__), 'static'),
             static_path=os.path.join(os.path.dirname(__file__), 'static'),
-            debug=True
+            debug=True,
+            autoreload=True
         )
         self._handlers = [
-            (r'/', IndexHandler),
-            (r'/ws', SocketHandler),
-            (r'/favicon.ico', web.StaticFileHandler)
+            (r'/', Server.IndexHandler),
+            (r'/ws', Server.SocketHandler),
+            (r'/favicon.ico', web.StaticFileHandler, { 'path': '.' })
         ]
 
-        web.Application.__init__(self, self._handlers, **self._settings)
+        self.app = web.Application(self._handlers, **self._settings)
 
-    def set_core(self, core):
-        self.core = core
-        metadata['width'] = core.width
-        metadata['height'] = core.height
+    class IndexHandler(web.RequestHandler):
+        def get(self):
+            self.render('index.html')
+
+    class SocketHandler(websocket.WebSocketHandler):
+        def open(self):
+            Server.clients.add(self)
+            self.write_message(Server.metadata)
+
+        def on_message(self, key):
+            if Server.core is not None:
+                Server.core.set_key(int(key))
+
+        def on_close(self):
+            Server.clients.remove(self)
+
+        def check_origin(self, orgin):
+            return True
+
+    def set_core(self, _core):
+        Server.core = _core
+        Server.metadata['width'] = _core.width
+        Server.metadata['height'] = _core.height
 
     def emit_frame(self, data):
-        for client in clients:
-            client.write_message(data, binary=True)
+        if data is not None and len(data) > 0:
+            print(len(data))
+            for client in Server.clients:
+                client.write_message(data, binary=True)
+
+    def listen(self, port):
+        self.app.listen(port)
 
 
 if __name__ == '__main__':

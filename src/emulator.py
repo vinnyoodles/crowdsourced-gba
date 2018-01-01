@@ -22,4 +22,7 @@ class Emulator(object):
         image = self.image.toPIL().convert('RGB')
         buf = io.BytesIO()
         image.save(buf, format='PNG')
-        return buf.getvalue()
+        return buf.getvalue()[:]
+
+    def set_key(self, key):
+        self.core.setKeys(key)
