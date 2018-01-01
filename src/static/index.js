@@ -1,11 +1,16 @@
 var SIZE_MODIFIER = 2;
 var KEY_MAP = {
-    88: 0,
-    90: 1,
-    65: 9,
-    83: 8,
-    13: 3,
-    8: 2
+    88: 0, // a
+    90: 1, // b
+    8:  2, // select
+    13: 3, // start
+    39: 4, // right
+    37: 5, // left
+    38: 6, // up
+    40: 7, // down
+    83: 8, // r
+    65: 9, // l
+
 };
 
 var host = window.location.host;
