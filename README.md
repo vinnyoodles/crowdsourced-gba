@@ -14,7 +14,7 @@ docker build . -t crowdsourced-gba
 docker run -v `pwd`:/home crowdsourced-gba
 ```
 
-The first line builds the docker image with all the dependencies listed in the Dockerfile.
+The first line builds the docker image, called `crowdsourced-gba`, with all the dependencies listed in the Dockerfile.
 The second line performs the `cmake` and `make` command.
 
 #### OSX
