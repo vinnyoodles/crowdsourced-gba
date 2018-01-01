@@ -55,6 +55,14 @@ __Note__: If you're getting an `ImportError` due to importing mgba, try setting 
 export DYLD_LIBRARY_PATH=MGBA_DYLIB_PATH
 ```
 
+Finally, to run the python server:
+
+```bash
+python src/main.py roms/legend_of_zelda_the_minish_cap.gba
+```
+
+The only argument is the GBA binary file, which in the example is *The Legend of Zelda: The Minish Cap*.
+
 ### Dependencies
 
 - [mgba](https://github.com/mgba-emu/mgba), GBA emulator with exposed python APIs (Distributed under the [Mozilla Public License version 2.0](https://www.mozilla.org/en-US/MPL/2.0/))
