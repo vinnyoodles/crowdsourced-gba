@@ -29,3 +29,4 @@ mgba-qt.6
 emulator/libmgba.so
 emulator/libmgba.so.0.7
 emulator/libmgba.so.0.7.0
+roms/*.sav

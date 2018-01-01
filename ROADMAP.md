@@ -14,3 +14,4 @@ __In Progress__
 - [x] ~~Emit emulator state (send frame bytes and possibly audio bytes)~~
 - [ ] *Support audio streaming*
 - [x] ~~Setup docker config to run on a remote server~~
+- [ ] *Add game state persistence*
