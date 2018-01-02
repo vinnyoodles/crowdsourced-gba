@@ -47,7 +47,7 @@ class Server:
         def on_message(self, key):
             if Server.core is not None:
                 cmd = dict()
-                temp[str(self)] = Server.keymap.get(int(key))
+                cmd[str(self)] = Server.keymap.get(int(key))
                 Server.newCmd['clientCmd'] = cmd
                 Server.allLogging.append(cmd)
                 Server.core.push_key(int(key))
