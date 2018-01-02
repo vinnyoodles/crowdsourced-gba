@@ -26,6 +26,10 @@ function onLoad(event) {
         } else {
             try {
                 var json = JSON.parse(event.data);
+                // print out the clients commands if we have any
+                if (json.clientCmd) {
+                 console.log(json.clientCmd)
+                }
                 setCanvas(json.width, json.height);
             } catch (err) {
                 console.log('Failed to handle', event.data)
