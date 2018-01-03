@@ -27,8 +27,9 @@ function onLoad(event) {
             try {
                 var json = JSON.parse(event.data);
                 // print out the clients commands if we have any
-                if (json.clientCmd) {
-                 console.log(json.clientCmd)
+                if (json.event === 'new action') {
+                 console.log(json.event)
+                 console.log(json.data)
                 }
                 setCanvas(json.width, json.height);
             } catch (err) {

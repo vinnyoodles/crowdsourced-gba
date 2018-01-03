@@ -10,12 +10,15 @@ class Server:
     core = None
 
     #Stores all commands that clients used in the game already
-    allLogging = list()
+    all_logs = dict()
+    all_logs['event'] = 'all actions'
+    cmd_list = []
     # Stores the current command used
-    newCmd = dict()
+    last_cmd = dict()
+    last_cmd['event'] = 'new action'
 
     # mapping of keynames that the client will use
-    keymap = {0: "a", 1: "b", 2: "select", 3: "Start", 4: "right",
+    KEYMAP = {0: "a", 1: "b", 2: "select", 3: "Start", 4: "right",
               5: "left", 6: "up", 7: "down", 8: "r", 9: "l"}
 
     def __init__(self):
@@ -41,16 +44,21 @@ class Server:
         def open(self):
             Server.clients.add(self)
             self.write_message(Server.metadata)
-            if len(Server.allLogging) > 0:
-                self.write_message(Server.allLogging)
+            self.write_message(Server.all_logs)
+
 
         def on_message(self, key):
             if Server.core is not None:
                 cmd = dict()
-                temp[str(self)] = Server.keymap.get(int(key))
-                Server.newCmd['clientCmd'] = cmd
-                Server.allLogging.append(cmd)
+                cmd[str(self)] = Server.KEYMAP.get(int(key))
+                Server.last_cmd['data'] = cmd
+                Server.cmd_list.append(cmd)
+                Server.all_logs['data'] = Server.cmd_list
                 Server.core.push_key(int(key))
+                #Send the recent command to the user
+                for client in Server.clients:
+                    if Server.last_cmd is not None:
+                        client.write_message(Server.last_cmd)
 
         def on_close(self):
             Server.clients.remove(self)
@@ -69,9 +77,6 @@ class Server:
             def stream_frame(self):
                 for client in Server.clients:
                     yield client.write_message(data, binary=True)
-                    #Send the recent command to the user
-                    if Server.newCmd is not None:
-                        yield client.write_message(Server.newCmd)
 
             tornado.ioloop.IOLoop.current().spawn_callback(stream_frame, self)
 
