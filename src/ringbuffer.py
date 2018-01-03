@@ -6,15 +6,17 @@ class RingBuffer:
 
     def append(self, value):
         if len(self._data) == self.size:
-            print(self.index)
             self._data[self.index] = value
         else:
             self._data.append(value)
         self.index = (self.index + 1) % self.size
 
     def get_k_recent(self, key):
-        if len(self._data) == self.size:
-            # starting index + k recent
-            return self._data[(self.index + key) % self.size]
+        if key > 1:
+            if len(self._data) == self.size:
+                # starting index + k recent
+                return self._data[(key - 1) % self.size]
+            else:
+                return self._data[key]
         else:
-            return self._data[key]
+            return 'Invalid Lookup'
