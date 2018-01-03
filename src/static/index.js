@@ -27,7 +27,7 @@ function onLoad(event) {
             try {
                 var json = JSON.parse(event.data);
                 // print out the clients commands if we have any
-                if (json.event === 'new action') {
+                if (json.event === 'new action' || json.event === 'all actions') {
                  console.log(json.event)
                  console.log(json.data)
                 }
