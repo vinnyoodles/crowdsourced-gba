@@ -9,15 +9,12 @@ class Server:
     # The emulator instance
     core = None
 
-    #Stores all commands that clients used in the game already
-    all_logs = dict()
-    all_logs['event'] = 'all actions'
-    all_logs['data'] = []
-
+    # Stores all commands that clients used in the game already
+    all_logs = list()
 
     # mapping of keynames that the client will use
-    KEYMAP = {0: "a", 1: "b", 2: "select", 3: "Start", 4: "right",
-              5: "left", 6: "up", 7: "down", 8: "r", 9: "l"}
+    KEYMAP = {0: 'a', 1: 'b', 2: 'select', 3: 'start', 4: 'right',
+              5: 'left', 6: 'up', 7: 'down', 8: 'r', 9: 'l'}
 
     def __init__(self):
         self._settings = dict(
@@ -42,22 +39,17 @@ class Server:
         def open(self):
             Server.clients.add(self)
             self.write_message(Server.metadata)
-            self.write_message(Server.all_logs)
+            self.write_message({'event': 'all logs', 'data': Server.all_logs})
 
 
         def on_message(self, key):
             if Server.core is not None:
-                # Stores the current command used
-                last_cmd = dict()
-                cmd = str(self) + ': ' + str(Server.KEYMAP.get(int(key)))
-                last_cmd['event'] = 'new action'
-                Server.last_cmd['data'] = cmd
-                Server.all_logs['data'].append(cmd)
+                command_string = "%s: %s" % (id(self), Server.KEYMAP.get(int(key)))
+                Server.all_logs.append(command_string)
                 Server.core.push_key(int(key))
+                # Send the recent command to the user
                 for client in Server.clients:
-                    #Send the recent command to all clients
-                    if Server.last_cmd is not None:
-                        client.write_message(Server.last_cmd)
+                    client.write_message({'event': 'last log', 'data': command_string})
 
         def on_close(self):
             Server.clients.remove(self)
@@ -67,6 +59,7 @@ class Server:
 
     def set_core(self, _core):
         Server.core = _core
+        Server.metadata['event'] = 'metadata'
         Server.metadata['width'] = _core.width
         Server.metadata['height'] = _core.height
 

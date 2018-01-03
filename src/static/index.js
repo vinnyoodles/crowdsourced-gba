@@ -26,12 +26,10 @@ function onLoad(event) {
         } else {
             try {
                 var json = JSON.parse(event.data);
-                // print out the clients commands if we have any
-                if (json.event === 'new action' || json.event === 'all actions') {
-                    console.log(json.event)
-                    console.log(json.data)
+                switch (json.event) {
+                    case 'metadata': return setCanvas(json.width, json.height);
+                    default: console.log(json);
                 }
-                setCanvas(json.width, json.height);
             } catch (err) {
                 console.log('Failed to handle', event.data)
             }
