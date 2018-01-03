@@ -1,4 +1,4 @@
-import os.path, tornado
+import os.path, tornado, sentry
 from tornado import websocket, web, ioloop
 
 class Server:
@@ -43,13 +43,15 @@ class Server:
 
 
         def on_message(self, key):
-            if Server.core is not None:
-                command_string = "%s: %s" % (id(self), Server.KEYMAP.get(int(key)))
-                Server.all_logs.append(command_string)
-                Server.core.push_key(int(key))
-                # Send the recent command to the user
-                for client in Server.clients:
-                    client.write_message({'event': 'last log', 'data': command_string})
+            if Server.core is None:
+                client.captureMessage('Socket event with undefined emulator core')
+                return
+            command_string = "%s: %s" % (id(self), Server.KEYMAP.get(int(key)))
+            Server.all_logs.append(command_string)
+            Server.core.push_key(int(key))
+            # Send the recent command to the user
+            for client in Server.clients:
+                client.write_message({'event': 'last log', 'data': command_string})
 
         def on_close(self):
             Server.clients.remove(self)
@@ -64,13 +66,15 @@ class Server:
         Server.metadata['height'] = _core.height
 
     def emit_frame(self, data):
-        if data is not None and len(data) > 0:
-            @tornado.gen.coroutine
-            def stream_frame(self):
-                for client in Server.clients:
-                    yield client.write_message(data, binary=True)
+        if data is None or len(data) <= 0:
+            sentry.client.captureMessage('Emulator core emitted empty frame')
+            return
+        @tornado.gen.coroutine
+        def stream_frame(self):
+            for client in Server.clients:
+                yield client.write_message(data, binary=True)
 
-            tornado.ioloop.IOLoop.current().spawn_callback(stream_frame, self)
+        tornado.ioloop.IOLoop.current().spawn_callback(stream_frame, self)
 
     def listen(self, port):
         self.app.listen(port)

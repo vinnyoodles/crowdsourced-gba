@@ -31,7 +31,7 @@ function onLoad(event) {
                     default: console.log(json);
                 }
             } catch (err) {
-                console.log('Failed to handle', event.data)
+                Raven.captureException(err)
             }
         }
     };
@@ -46,10 +46,10 @@ function onLoad(event) {
 }
 
 function onKey(event) {
-    if (!connected || !KEY_MAP[event.keyCode])
-        return
-
-    ws.send(KEY_MAP[event.keyCode]);
+    if (!connected)
+        Raven.captureMessage('Client is not connected to websocket');
+    else if (KEY_MAP[event.keyCode])
+        ws.send(KEY_MAP[event.keyCode]);
 }
 
 function updateFrame(frame) {

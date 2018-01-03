@@ -1,4 +1,4 @@
-import mgba.core, mgba.image, io
+import mgba.core, mgba.image, io, sentry
 
 
 class Emulator(object):
@@ -17,17 +17,25 @@ class Emulator(object):
         self.queue = []
 
     def run(self):
-        while self.enabled:
-            key = 0 if len(self.queue) == 0 else self.queue.pop(0)
-            self.core.setKeys(key)
-            self.core.runFrame()
-            self.web_server.emit_frame(self.get_frame())
+        try:
+            while self.enabled:
+                key = 0 if len(self.queue) == 0 else self.queue.pop(0)
+                self.core.setKeys(key)
+                self.core.runFrame()
+                self.web_server.emit_frame(self.get_frame())
+        except:
+            sentry.client.captureException()
+
 
     def get_frame(self):
-        image = self.image.toPIL().convert('RGB')
-        buf = io.BytesIO()
-        image.save(buf, format='PNG')
-        return buf.getvalue()[:]
+        try:
+            image = self.image.toPIL().convert('RGB')
+            buf = io.BytesIO()
+            image.save(buf, format='PNG')
+            return buf.getvalue()[:]
+        except:
+            sentry.client.captureException()
+            return []
 
     def push_key(self, key):
         self.queue.append(key)
