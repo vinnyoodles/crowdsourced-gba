@@ -49,8 +49,7 @@ class Server:
 
         def on_message(self, key):
             if Server.core is not None:
-                cmd = dict()
-                cmd[str(self)] = Server.KEYMAP.get(int(key))
+                cmd = str(self) + ': ' + str(Server.KEYMAP.get(int(key)))
                 Server.last_cmd['data'] = cmd
                 Server.cmd_list.append(cmd)
                 Server.all_logs['data'] = Server.cmd_list
