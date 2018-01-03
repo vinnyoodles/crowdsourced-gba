@@ -12,10 +12,8 @@ class Server:
     #Stores all commands that clients used in the game already
     all_logs = dict()
     all_logs['event'] = 'all actions'
-    cmd_list = []
-    # Stores the current command used
-    last_cmd = dict()
-    last_cmd['event'] = 'new action'
+    all_logs['data'] = []
+
 
     # mapping of keynames that the client will use
     KEYMAP = {0: "a", 1: "b", 2: "select", 3: "Start", 4: "right",
@@ -49,13 +47,15 @@ class Server:
 
         def on_message(self, key):
             if Server.core is not None:
+                # Stores the current command used
+                last_cmd = dict()
                 cmd = str(self) + ': ' + str(Server.KEYMAP.get(int(key)))
+                last_cmd['event'] = 'new action'
                 Server.last_cmd['data'] = cmd
-                Server.cmd_list.append(cmd)
-                Server.all_logs['data'] = Server.cmd_list
+                Server.all_logs['data'].append(cmd)
                 Server.core.push_key(int(key))
-                #Send the recent command to the user
                 for client in Server.clients:
+                    #Send the recent command to all clients
                     if Server.last_cmd is not None:
                         client.write_message(Server.last_cmd)
 
