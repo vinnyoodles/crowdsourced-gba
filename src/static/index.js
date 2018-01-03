@@ -26,7 +26,10 @@ function onLoad(event) {
         } else {
             try {
                 var json = JSON.parse(event.data);
-                setCanvas(json.width, json.height);
+                switch (json.event) {
+                    case 'metadata': return setCanvas(json.width, json.height);
+                    default: console.log(json);
+                }
             } catch (err) {
                 Raven.captureException(err)
             }

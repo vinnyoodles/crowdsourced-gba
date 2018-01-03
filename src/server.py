@@ -8,6 +8,14 @@ class Server:
     metadata = dict()
     # The emulator instance
     core = None
+
+    # Stores all commands that clients used in the game already
+    all_logs = list()
+
+    # mapping of keynames that the client will use
+    KEYMAP = {0: 'a', 1: 'b', 2: 'select', 3: 'start', 4: 'right',
+              5: 'left', 6: 'up', 7: 'down', 8: 'r', 9: 'l'}
+
     def __init__(self):
         self._settings = dict(
             template_path=os.path.join(os.path.dirname(__file__), 'static'),
@@ -31,12 +39,19 @@ class Server:
         def open(self):
             Server.clients.add(self)
             self.write_message(Server.metadata)
+            self.write_message({'event': 'all logs', 'data': Server.all_logs})
+
 
         def on_message(self, key):
             if Server.core is None:
                 client.captureMessage('Socket event with undefined emulator core')
                 return
+            command_string = "%s: %s" % (id(self), Server.KEYMAP.get(int(key)))
+            Server.all_logs.append(command_string)
             Server.core.push_key(int(key))
+            # Send the recent command to the user
+            for client in Server.clients:
+                client.write_message({'event': 'last log', 'data': command_string})
 
         def on_close(self):
             Server.clients.remove(self)
@@ -46,6 +61,7 @@ class Server:
 
     def set_core(self, _core):
         Server.core = _core
+        Server.metadata['event'] = 'metadata'
         Server.metadata['width'] = _core.width
         Server.metadata['height'] = _core.height
 
