@@ -18,7 +18,7 @@ ADD https://cmake.org/files/v3.7/cmake-3.7.2-Linux-x86_64.sh /cmake-3.7.2-Linux-
 RUN mkdir /opt/cmake
 RUN sh /cmake-3.7.2-Linux-x86_64.sh --prefix=/opt/cmake --skip-license
 RUN ln -s /opt/cmake/bin/cmake /usr/local/bin/cmake
-RUN pip install 'tornado==4.5.2' 'cffi==1.11.2' 'Pillow==4.3.0'
+RUN pip install 'tornado==4.5.2' 'cffi==1.11.2' 'Pillow==4.3.0' 'raven==6.4.0'
 COPY . /home
 RUN cd /home/emulator && \
     cmake -DCMAKE_INSTALL_PREFIX:PATH=/usr . -DBUILD_PYTHON=ON -DBUILD_SERVER=OFF && \
