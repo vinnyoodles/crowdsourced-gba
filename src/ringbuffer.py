@@ -1,32 +1,20 @@
 class RingBuffer:
     def __init__(self, size):
         self.index = 0
-        self.size = size
-        self._data = []
-        self.last_elem = 0
-        self.first_elem = 0
+        self._size = size
+        self._data = [0] * size
 
     def append(self, value):
-        if len(self._data) == self.size:
-            self.first_elem = (self.first_elem + 1) % self.size
-            self._data[self.index] = value
-        else:
-            self._data.append(value)
-        self.last_elem = self.index
-        self.index = (self.index + 1) % self.size
+        self._data[self.index] = value
+        self.index = (self.index + 1) % self._size
 
-
-    def get_k_recent(self, key):
-        k_recents = list()
-        count = self.last_elem
-        if key <= 0:
-            raise LookupError("Invalid Lookup")
-        else:
-            while key != 0 and count != self.first_elem:
-                k_recents.append(self._data[count])
-                count -= 1
-                if count < 0:
-                    count = self.size - 1
-                key -= 1
-            k_recents.append(self._data[count])
-            return k_recents
+    def get_k_recent(self, k):
+        result = list()
+        if k <= 0 or k > self._size:
+            raise LookupError('Invalid Lookup')
+        curr_index = (self.index - k) % self._size
+        while k > 0:
+            result.append(self._data[curr_index])
+            curr_index = (curr_index + 1) % self._size
+            k -= 1
+        return result

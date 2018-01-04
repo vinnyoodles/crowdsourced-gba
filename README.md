@@ -63,6 +63,14 @@ python src/main.py roms/legend_of_zelda_the_minish_cap.gba
 
 The only argument is the GBA binary file, which in the example is *The Legend of Zelda: The Minish Cap*.
 
+### Unit Tests
+
+To run the python tests:
+
+```bash
+python -m unittest discover -s src/tests -p '*.py'
+```
+
 ### Dependencies
 
 - [mgba](https://github.com/mgba-emu/mgba), GBA emulator with exposed python APIs (Distributed under the [Mozilla Public License version 2.0](https://www.mozilla.org/en-US/MPL/2.0/))
