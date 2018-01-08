@@ -1,5 +1,6 @@
 import os.path, tornado, sentry
 from tornado import websocket, web, ioloop
+from ringbuffer import RingBuffer
 
 class Server:
     # Store all active clients in a set.
@@ -9,8 +10,8 @@ class Server:
     # The emulator instance
     core = None
 
-    # Stores all commands that clients used in the game already
-    all_logs = list()
+    # Stores all the commands in a ring buffer of size 1000
+    all_logs = RingBuffer(1000)
 
     # mapping of keynames that the client will use
     KEYMAP = {0: 'a', 1: 'b', 2: 'select', 3: 'start', 4: 'right',
@@ -39,7 +40,9 @@ class Server:
         def open(self):
             Server.clients.add(self)
             self.write_message(Server.metadata)
-            self.write_message({'event': 'all logs', 'data': Server.all_logs})
+            buffer_index = Server.all_logs.index
+            if buffer_index > 0:
+                self.write_message({ 'event': 'all logs', 'data': Server.all_logs.get_k_recent(buffer_index) })
 
 
         def on_message(self, key):
