@@ -8,6 +8,7 @@ class Emulator(object):
         self.width, self.height = self.core.desiredVideoDimensions()
         self.image = mgba.image.Image(self.width, self.height)
         self.core.setVideoBuffer(self.image)
+        self.core.autoloadSave()
 
         # Reset the core. This is needed before it can run.
         self.core.reset()
