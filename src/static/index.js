@@ -28,8 +28,8 @@ function onLoad(event) {
                 var json = JSON.parse(event.data);
                 switch (json.event) {
                     case 'metadata': return setCanvas(json.width, json.height);
-                    default: gameEvents(json);
-
+                    case 'last log': return displayMessage(json.data);
+                    case 'all logs': return addGameEvent(json);
                 }
             } catch (err) {
                 Raven.captureException(err)
@@ -46,19 +46,9 @@ function onLoad(event) {
     }
 }
 
-function gameEvents(json) {
-
-  switch (json.event) {
-    case 'last log':
-        displayMessage(json.data);
-      break;
-    case 'all logs':
-      for (var i = 0; i < json.data.length; i++) {
-          displayMessage(json.data[i]);
-      }
-      break;
-    default: //shouldn't update the UI
-  }
+function addGameEvent(json) {
+    for (var message of json.data)
+        displayMessage(message);
 }
 
 function displayMessage(message) {
