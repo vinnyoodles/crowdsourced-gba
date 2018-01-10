@@ -28,7 +28,8 @@ function onLoad(event) {
                 var json = JSON.parse(event.data);
                 switch (json.event) {
                     case 'metadata': return setCanvas(json.width, json.height);
-                    default: console.log(json);
+                    default: gameEvents(json);
+
                 }
             } catch (err) {
                 Raven.captureException(err)
@@ -43,6 +44,22 @@ function onLoad(event) {
     ws.onclose = function() {
         connected = false;
     }
+}
+
+function gameEvents(json) {
+  var parent = document.getElementById('commands');
+  var child = document.createElement('p');
+  switch (json.event) {
+    case 'last log':
+        var html = "<p>" + json.data + "</p>";
+        child.innerHTML = html;
+        parent.appendChild(child);
+      break;
+    case 'all logs':
+      break;
+
+    default: //no gets updated
+
 }
 
 function onKey(event) {
