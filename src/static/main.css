@@ -1,9 +1,11 @@
 body {
     background-color: #252227;
 }
+
 .game {
-  float: left;
+    float: left;
 }
+
 #canvas {
     padding: 0;
     top: 0;
@@ -13,16 +15,18 @@ body {
     margin: auto;
     position: absolute;
 }
-.messagesContainer {
-  float: right;
-  height: 250px;
-  width: 250px;
-  padding: 3px;
-  background:#D3D3D3;
-  height: 100vh;
+
+.message-container {
+    float: right;
+    height: 250px;
+    width: 250px;
+    padding: 3px;
+    background:#D3D3D3;
+    height: 100vh;
 }
+
 .messages {
-  height: 95vh;
-  overflow: auto;
-  background: #fff;
+    height: 95vh;
+    overflow: auto;
+    background: #fff;
 }
