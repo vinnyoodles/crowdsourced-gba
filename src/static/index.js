@@ -47,19 +47,26 @@ function onLoad(event) {
 }
 
 function gameEvents(json) {
-  var parent = document.getElementById('commands');
-  var child = document.createElement('p');
+
   switch (json.event) {
     case 'last log':
-        var html = "<p>" + json.data + "</p>";
-        child.innerHTML = html;
-        parent.appendChild(child);
+        displayMessage(json.data);
       break;
     case 'all logs':
+      for (var i = 0; i < json.data.length; i++) {
+          displayMessage(json.data[i]);
+      }
       break;
+    default: //shouldn't update the UI
+  }
+}
 
-    default: //no gets updated
-
+function displayMessage(message) {
+  var parent = document.getElementById('commands');
+  var child = document.createElement('p');
+  var html = "<p>" + message + "</p>";
+  child.innerHTML = html;
+  parent.appendChild(child);
 }
 
 function onKey(event) {
