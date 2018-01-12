@@ -1,6 +1,5 @@
 import mgba.core, mgba.image, io, sentry
 
-
 class Emulator(object):
     def __init__(self, rom_path, web_server):
         self.web_server = web_server

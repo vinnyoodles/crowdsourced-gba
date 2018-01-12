@@ -196,6 +196,9 @@ class Core(object):
     def setVideoBuffer(self, image):
         self._core.setVideoBuffer(self._core, image.buffer, image.stride)
 
+    def setAudioBufferSize(self, size):
+        self._core.setAudioBufferSize(self._core, size)
+
     def reset(self):
         self._core.reset(self._core)
         self._wasReset = True
