@@ -271,7 +271,7 @@ static void _GBACorePutPixels(struct mCore* core, const void* buffer, size_t str
 	gbacore->renderer.d.putPixels(&gbacore->renderer.d, stride, buffer);
 }
 
-static struct blip_t* _GBACoreGetAudioChannel(struct mCore* core, int ch) {
+static struct blip_t* _GBACoreGetAudioChannel(struct mCore* core, int ch, int16_t* buf) {
 	struct GBA* gba = core->board;
 	switch (ch) {
 	case 0:

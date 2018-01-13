@@ -28,9 +28,9 @@ void AudioDevice::setFormat(const QAudioFormat& format) {
 	}
 	double fauxClock = GBAAudioCalculateRatio(1, m_context->impl->sync.fpsTarget, 1);
 	mCoreSyncLockAudio(&m_context->impl->sync);
-	blip_set_rates(m_context->core->getAudioChannel(m_context->core, 0),
+	blip_set_rates(m_context->core->getAudioChannel(m_context->core, 0, NULL),
 		           m_context->core->frequency(m_context->core), format.sampleRate() * fauxClock);
-	blip_set_rates(m_context->core->getAudioChannel(m_context->core, 1),
+	blip_set_rates(m_context->core->getAudioChannel(m_context->core, 1, NULL),
 		           m_context->core->frequency(m_context->core), format.sampleRate() * fauxClock);
 	mCoreSyncUnlockAudio(&m_context->impl->sync);
 }
@@ -50,12 +50,12 @@ qint64 AudioDevice::readData(char* data, qint64 maxSize) {
 	}
 
 	mCoreSyncLockAudio(&m_context->impl->sync);
-	int available = blip_samples_avail(m_context->core->getAudioChannel(m_context->core, 0));
+	int available = blip_samples_avail(m_context->core->getAudioChannel(m_context->core, 0, NULL));
 	if (available > maxSize / sizeof(GBAStereoSample)) {
 		available = maxSize / sizeof(GBAStereoSample);
 	}
-	blip_read_samples(m_context->core->getAudioChannel(m_context->core, 0), &reinterpret_cast<GBAStereoSample*>(data)->left, available, true);
-	blip_read_samples(m_context->core->getAudioChannel(m_context->core, 1), &reinterpret_cast<GBAStereoSample*>(data)->right, available, true);
+	blip_read_samples(m_context->core->getAudioChannel(m_context->core, 0, NULL), &reinterpret_cast<GBAStereoSample*>(data)->left, available, true);
+	blip_read_samples(m_context->core->getAudioChannel(m_context->core, 1, NULL), &reinterpret_cast<GBAStereoSample*>(data)->right, available, true);
 	mCoreSyncConsumeAudio(&m_context->impl->sync);
 	return available * sizeof(GBAStereoSample);
 }

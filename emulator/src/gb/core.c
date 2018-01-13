@@ -245,7 +245,7 @@ static void _GBCorePutPixels(struct mCore* core, const void* buffer, size_t stri
 	gbcore->renderer.d.putPixels(&gbcore->renderer.d, stride, buffer);
 }
 
-static struct blip_t* _GBCoreGetAudioChannel(struct mCore* core, int ch) {
+static struct blip_t* _GBCoreGetAudioChannel(struct mCore* core, int ch, int16_t* buf) {
 	struct GB* gb = core->board;
 	switch (ch) {
 	case 0:

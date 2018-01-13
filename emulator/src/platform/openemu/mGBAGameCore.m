@@ -122,9 +122,9 @@
 
 	int16_t samples[SAMPLES * 2];
 	size_t available = 0;
-	available = blip_samples_avail(core->getAudioChannel(core, 0));
-	blip_read_samples(core->getAudioChannel(core, 0), samples, available, true);
-	blip_read_samples(core->getAudioChannel(core, 1), samples + 1, available, true);
+	available = blip_samples_avail(core->getAudioChannel(core, 0, NULL));
+	blip_read_samples(core->getAudioChannel(core, 0, NULL), samples, available, true);
+	blip_read_samples(core->getAudioChannel(core, 1, NULL), samples + 1, available, true);
 	[[self ringBufferAtIndex:0] write:samples maxLength:available * 4];
 }
 
@@ -135,8 +135,8 @@
 
 - (void)setupEmulation
 {
-	blip_set_rates(core->getAudioChannel(core, 0), core->frequency(core), 32768);
-	blip_set_rates(core->getAudioChannel(core, 1), core->frequency(core), 32768);
+	blip_set_rates(core->getAudioChannel(core, 0, NULL), core->frequency(core), 32768);
+	blip_set_rates(core->getAudioChannel(core, 1, NULL), core->frequency(core), 32768);
 }
 
 #pragma mark - Video

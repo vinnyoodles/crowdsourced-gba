@@ -149,8 +149,8 @@ int main(int argc, char** argv) {
 		savestate = 0;
 	}
 
-	blip_set_rates(core->getAudioChannel(core, 0), GBA_ARM7TDMI_FREQUENCY, 0x8000);
-	blip_set_rates(core->getAudioChannel(core, 1), GBA_ARM7TDMI_FREQUENCY, 0x8000);
+	blip_set_rates(core->getAudioChannel(core, 0, NULL), GBA_ARM7TDMI_FREQUENCY, 0x8000);
+	blip_set_rates(core->getAudioChannel(core, 1, NULL), GBA_ARM7TDMI_FREQUENCY, 0x8000);
 
 	_fuzzRunloop(core, fuzzOpts.frames);
 
@@ -177,8 +177,8 @@ static void _fuzzRunloop(struct mCore* core, int frames) {
 	do {
 		core->runFrame(core);
 		--frames;
-		blip_clear(core->getAudioChannel(core, 0));
-		blip_clear(core->getAudioChannel(core, 1));
+		blip_clear(core->getAudioChannel(core, 0, NULL));
+		blip_clear(core->getAudioChannel(core, 1, NULL));
 	} while (frames > 0 && !_dispatchExiting);
 }
 
