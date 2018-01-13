@@ -199,6 +199,15 @@ class Core(object):
     def setAudioBufferSize(self, size):
         self._core.setAudioBufferSize(self._core, size)
 
+    def getAudio(self):
+        print('make buf')
+        audio_buf = ffi.new("int16_t[]", 2048)
+        print('call function', audio_buf)
+        print(dir(lib))
+        lib.mCoreGetAudio(self._core, audio_buf)
+        print('return buf')
+        return ffi.buffer(audio_buf)
+
     def reset(self):
         self._core.reset(self._core)
         self._wasReset = True
